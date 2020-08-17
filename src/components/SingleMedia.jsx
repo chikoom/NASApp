@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import MediaCard from './MediaCard'
-import BackButton from './BackButton'
 
 const SingleMedia = props => {
   console.log(props.match.params.id)
@@ -22,6 +21,7 @@ const SingleMedia = props => {
         item => item._id === props.match.params.id
       ) && (
         <MediaCard
+          showBack={true}
           saveToDB={props.saveToDB}
           removeFromDB={props.removeFromDB}
           cardData={props.favouritesList.find(

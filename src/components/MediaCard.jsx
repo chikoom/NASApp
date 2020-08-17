@@ -1,10 +1,5 @@
 import React from 'react'
-import {
-  BrowserRouter as Router,
-  Route,
-  Redirect,
-  Link,
-} from 'react-router-dom'
+import { BrowserRouter as Router, Link } from 'react-router-dom'
 
 import { makeStyles } from '@material-ui/core/styles'
 import Card from '@material-ui/core/Card'
@@ -12,10 +7,9 @@ import CardActionArea from '@material-ui/core/CardActionArea'
 import CardActions from '@material-ui/core/CardActions'
 import CardContent from '@material-ui/core/CardContent'
 import CardMedia from '@material-ui/core/CardMedia'
-import Button from '@material-ui/core/Button'
+import BackButton from './BackButton'
 import IconLabelButtons from './Button'
 import Typography from '@material-ui/core/Typography'
-import apiUtils from '../utils/api'
 
 const useStyles = makeStyles({
   root: {
@@ -50,6 +44,9 @@ const MediaCard = props => {
         </CardContent>
       </CardActionArea>
       <CardActions>
+        {props.showBack && <BackButton />}
+
+        <div style={{ width: '100%' }}></div>
         <IconLabelButtons
           isSaved={cardData.isSaved}
           saveToDB={() => {

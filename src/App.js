@@ -6,7 +6,7 @@ import Home from './components/Home'
 import Search from './components/Search'
 import Favourites from './components/Favourites'
 import SingleMedia from './components/SingleMedia'
-import axios from 'axios'
+import SnackBar from './components/SnackBar'
 import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom'
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles'
 import 'fontsource-roboto'
@@ -25,17 +25,16 @@ const theme = createMuiTheme({
 function App() {
   const [favouritesList, setFavouritesList] = useState([])
   const [homeCardData, setHomeCardData] = useState({})
+  const [snackBarState, setSnackBarState] = useState({ open: false, msg: '' })
 
   const saveToDB = async mediaObject => {
     const result = await apiUtils.saveToDB(mediaObject)
     const newFavourites = [...favouritesList]
     const addedItem = newFavourites.find(item => item._id === result.data._id)
-    if (addedItem) {
-      addedItem.isSaved = true
-    } else {
-      newFavourites.push(result.data)
-    }
+    if (addedItem) addedItem.isSaved = true
+    else newFavourites.push(result.data)
     setFavouritesList(newFavourites)
+    setSnackBarState({ open: true, msg: 'Saved to favourites!' })
   }
 
   const removeFromDB = async mediaId => {
@@ -44,6 +43,7 @@ function App() {
     const removedItem = newFavourites.find(item => item._id === mediaId)
     removedItem.isSaved = false
     setFavouritesList(newFavourites)
+    setSnackBarState({ open: true, msg: 'Removed from favourites!' })
   }
 
   const isInFavourites = title => {
@@ -66,10 +66,7 @@ function App() {
 
   useEffect(() => {
     const getAPOD = async () => {
-      const result = await axios.get(
-        'https://api.nasa.gov/planetary/apod?api_key=dwGBqWBqAvRNqVhl5cgxZCdumM8Z9Mv5r89H4x3y'
-      )
-
+      const result = await apiUtils.getAPOD()
       setHomeCardData({
         description: result.data.explanation,
         media_type: result.data.media_type,
@@ -135,6 +132,7 @@ function App() {
               />
             )}
           />
+          <SnackBar state={snackBarState} setSnackBarState={setSnackBarState} />
         </div>
       </ThemeProvider>
     </Router>

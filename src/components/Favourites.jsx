@@ -1,7 +1,5 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import MediaCard from './MediaCard'
-import apiUtils from '../utils/api'
-import { PromiseProvider } from 'mongoose'
 
 const Favourites = props => {
   return (
